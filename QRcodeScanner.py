@@ -14,22 +14,18 @@
 #	- Your source code should be in github before Feb 19
 #	- Create a demo of your program (1-2 min) and send it directly to my messenger
 
+from encodings import utf_8
 import cv2
-import webbrowser
+from pyzbar import pyzbar
 
-cap=cv2.VideoCapture(0)
-detect= cv2.QRCodeDetector()
-while True:
-    _, img=cap.read()
-    data,one, _= detect.detectAndDecode(img)
-    if data:
-        a=data
-        break
-    cv2.imshow('QRcodeScanner app', img)
-    if cv2.waitKey(1)==ord('q'):
-        break
-b=webbrowser.open(str(a))
-cap.release(a)
-cv2.destroyAllWindows()
+def read_qrcodes(frame):
+    qrcodes = pyzbar.decode(frame)
+    for qrcode in qrcodes:
+        x, y, w, h = qrcode.rect
+        #Decode the qrcode
+        qrcode_info = qrcode.data.decode('utf_8')
+        cv2.rectangle(frame, (x,y),(x+w, y+h), (0, 255, 0), 2)
+
+        #Show the text
 
 

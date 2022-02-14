@@ -33,7 +33,23 @@ def read_qrcodes(frame):
 
         #Export into text document
         with open("QRcode_Result.txt", mode = 'w') as file:
-            file.write("Recognized QR code:" + qrcode_info)
+            file.write("Recognized QR code: " + qrcode_info)
     return frame
 
+#Turning on the QRcode scanner
+def main():
+    camera = cv2.VideoCapture(0)
+    ret, frame = camera.read()
+    while ret:
+        ret, frame = camera.read()
+        frame = read_qrcodes(frame)
+        cv2.imshow('QR Code Scanner App', frame)
+        if cv2.waitKey(1) & 0xFF == 27:
+            break
+
+    camera.release()
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
 

@@ -16,6 +16,7 @@
 
 from encodings import utf_8
 import cv2
+from cv2 import putText
 from pyzbar import pyzbar
 
 def read_qrcodes(frame):
@@ -27,5 +28,12 @@ def read_qrcodes(frame):
         cv2.rectangle(frame, (x,y),(x+w, y+h), (0, 255, 0), 2)
 
         #Show the text
+        font = cv2.FONT_HERSHEY_COMPLEX_SMALL
+        cv2,putText(frame, qrcode_info, (x + 6, y - 6), font, 2.0, (255, 255, 255), 1)
+
+        #Export into text document
+        with open("QRcode_Result.txt", mode = 'w') as file:
+            file.write("Recognized QR code:" + qrcode_info)
+    return frame
 
 

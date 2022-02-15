@@ -15,9 +15,11 @@
 #	- Create a demo of your program (1-2 min) and send it directly to my messenger
 
 from encodings import utf_8
+import datetime
 import cv2
 from cv2 import putText
 from pyzbar import pyzbar
+
 
 def read_qrcodes(frame):
     qrcodes = pyzbar.decode(frame)
@@ -33,8 +35,10 @@ def read_qrcodes(frame):
 
         #Export into text document
         with open("QRcode_Result.txt", mode = 'w') as file:
-            file.write("Recognized QR code: " + qrcode_info)
+           file.write(f'Scanned QR Code Result: {qrcode_info} recorded at %s.\n' % 
+               (datetime.datetime.now()))      
     return frame
+
 
 #Turning on the QRcode scanner
 def main():
@@ -46,7 +50,7 @@ def main():
         cv2.imshow('QR Code Scanner App', frame)
         if cv2.waitKey(1) & 0xFF == 27:
             break
-
+    
     camera.release()
     cv2.destroyAllWindows()
 
